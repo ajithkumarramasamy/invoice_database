@@ -12,7 +12,10 @@ app.use(
 );
 
 app.get("/", (request, response) => {
-  response.send("Hollo");
+  db.all(sql, [], (err, rows) => {
+    if (err) return console.error(err.message);
+    response.send(rows);
+  });
 });
 
 app.listen(3001);
