@@ -12,6 +12,14 @@ app.use(
 );
 
 app.get("/", (request, response) => {
+  const {
+    filterFinancialYear,
+    filterInvoiceNumber,
+    filterFromDate,
+    filterToDate,
+  } = request.query;
+
+  sql = `SELECT * FROM details WHERE FinancialYear = filterFinancialYear AND InvoiceNumber = filterInvoiceNumber AND InvoiceDate BETWEEN filterFromDate AND filterToDate`;
   db.all(sql, [], (err, rows) => {
     if (err) return console.error(err.message);
     response.send(rows);
@@ -32,11 +40,17 @@ const db = new sqlite3.Database(
 
 //sql = `INSERT INTO details (InvoiceDate, InvoiceNumber, InvoiceAmount, FinancialYear) VALUES (?, ?, ?, ?)`;
 
-//db.run(sql, [08 / 04 / 2016, 1, 100, 2016], (err) => {
-//  if (err) return console.error(err.message);
-//});
+//db.run(
+//  sql,
+//  ["03-08-2022", 2, 200.0, "2022"],
+//  ["07-05-2023", 4, 150.0, "2023"],
+//  ["01-10-2021", 1, 250.0, "2021"],
+//  (err) => {
+//    if (err) return console.error(err.message);
+//  }
+//);
 
-sql = `SELECT * FROM details`;
+sql = `SELECT * FROM details WHERE FinancialYear = "2022" AND InvoiceNumber = 2 AND InvoiceDate BETWEEN "01-08-2022" AND "10-08-2022"`;
 
 db.all(sql, [], (err, rows) => {
   if (err) return console.error(err.message);
@@ -44,3 +58,11 @@ db.all(sql, [], (err, rows) => {
     console.log(row);
   });
 });
+
+//sql = `DELETE FROM details`;
+
+//db.run(sql, (err) => {
+//  if (err) return console.error(err.message);
+
+//  console.log("deleted");
+//});
