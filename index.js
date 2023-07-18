@@ -19,7 +19,7 @@ app.get("/", (request, response) => {
     filterToDate,
   } = request.query;
 
-  sql = `SELECT * FROM details WHERE FinancialYear = filterFinancialYear AND InvoiceNumber = filterInvoiceNumber AND InvoiceDate BETWEEN filterFromDate AND filterToDate`;
+  sql = `SELECT * FROM details WHERE FinancialYear = ${filterFinancialYear} AND InvoiceNumber = ${filterInvoiceNumber} AND InvoiceDate BETWEEN ${filterFromDate} AND ${filterToDate}`;
   db.all(sql, [], (err, rows) => {
     if (err) return console.error(err.message);
     response.send(rows);
